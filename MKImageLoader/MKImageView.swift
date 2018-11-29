@@ -11,17 +11,20 @@ import Foundation
 
 extension UIImageView{
     
-    func setImage(withUrl url:String, placeholderImage:UIImage) -> Void {
-       
-        self.image = placeholderImage
     
-        if let imageDownloader = MKImageDownloadManager.sharedInstance.getDownloader(forUrl: url){
-            
-            imageDownloader.updateImageView(imageView: self)
-            imageDownloader.resume()
-            
-        }else{
-            MKImageDownloadManager.sharedInstance.setDownloader(downloader: MKImageDownloader(url: url, imageView: self), url: url)
+    func setImage(withUrl url:String?, placeholderImage:UIImage, onSuccess:@escaping (_ image:UIImage?) -> Void, onFailure:@escaping (_ error:Error?) -> Void) -> Void {
+        
+        guard let finalUrl = url else{
+            print("Url can not be nil")
+            return
         }
+        self.image = placeholderImage
+
+        MKImageDownloader().downloadAndCacheImage(url: finalUrl, onSuccess: { (image) in
+            onSuccess(image)
+        }) { (error) in
+            onFailure(error)
+        }
+       
     }
 }

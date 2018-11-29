@@ -32,7 +32,16 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                            "https://dwgyu36up6iuz.cloudfront.net/heru80fdn/image/upload/c_fill,d_placeholder_golfdigest.png,fl_progressive,g_face,h_450,q_80,w_800/v1496421873/golfdigest_major-championships-7-things-you-need-to-know-about-erin-hills.jpg",
                            "https://i.ytimg.com/vi/X57Lx9GllRg/maxresdefault.jpg",
                            "https://i.ytimg.com/vi/t1QzlkHv1R4/hqdefault.jpg",
-                           "https://i.ytimg.com/vi/0Y6mBWyEDlY/hqdefault.jpg"
+                           "https://i.ytimg.com/vi/0Y6mBWyEDlY/hqdefault.jpg",
+                           "https://seaworld.scdn3.secure.raxcdn.com/tampa/-/media/busch-gardens-tampa/listing-images/357x229/animals/2017_buschgardenstampabay_animals_cheetah2_357x229.ashx?version=1_201704101205",
+                           "https://ichef.bbci.co.uk/news/660/cpsprodpb/3EBA/production/_96985061_gettyimages-531027327.jpg",
+                           "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNO8Uo6q_J8V5YWpHKkpf65HDqBjg0-M_JZBQKkqvKJT990BZY",
+                           "https://img.purch.com/w/660/aHR0cDovL3d3dy5saXZlc2NpZW5jZS5jb20vaW1hZ2VzL2kvMDAwLzA5NS80MjMvb3JpZ2luYWwvbWVlcmthdHMtZmlnaHRpbmcuanBn",
+                           "https://insider.si.edu/wp-content/uploads/2017/04/SCTA-copy.jpg",
+                           "https://files.allaboutbirds.net/wp-content/uploads/2015/06/prow-featured.jpg",
+                           "https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Icterus-galbula-002.jpg/1200px-Icterus-galbula-002.jpg",
+                           "https://s7d2.scene7.com/is/image/PetSmart/ARTHMB-NewPetBirdChecklist-20160818?$AR1104$",
+                           "https://s7d2.scene7.com/is/image/PetSmart/AR1501_TOPIC_IMAGE-NewPetBirdChecklist-20160818?$AR1501$"
                            ]
     
     
@@ -54,11 +63,24 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell:ExampleCell = self.tableView.dequeueReusableCell(withIdentifier: "examplecell") as! ExampleCell
         
-
-        cell.cellImage.setImage(withUrl: images[indexPath.row], placeholderImage: UIImage.init(named: "test")!)
+        
+        cell.cellImage.setImage(withUrl: images[indexPath.row], placeholderImage: UIImage(named: "test")!, onSuccess: { (image) in
+            
+            DispatchQueue.main.async {
+                
+                let cell1:ExampleCell? = tableView.cellForRow(at: indexPath) as? ExampleCell
+                cell1?.cellImage.image = image
+                
+            }
+            
+        }) { (error) in
+            
+        }
+        
         cell.cellImage.contentMode = .scaleAspectFit
         
         return cell;
+       
     }
     
 
