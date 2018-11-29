@@ -12,18 +12,29 @@ class MKImageDownloader: NSObject {
 
     func downloadAndCacheImage(url:String,onSuccess:@escaping (_ image:UIImage?) -> Void, onFailure:@escaping (_ error:Error?) -> Void) -> Void {
         
-        let url = URL(string: url )
+        let finalUrl = URL(string: url )
         
-        URLSession.shared.dataTask(with: url!, completionHandler: { (data, response, error) in
-            
-            if error != nil {
-                print(error!)
-                onFailure(error)
-            }else{
-                onSuccess(UIImage(data: data!))
-            }
-            
-        }).resume()
+        if let image = MKImageDownloadManager.sharedInstance.getImage(forUrl: url){
+            onSuccess(image)
+        }else{
+            URLSession.shared.dataTask(with: finalUrl!, completionHandler: { (data, response, error) in
+                
+                if error != nil {
+                    print(error!)
+                    onFailure(error)
+                }else{
+                    if let image = UIImage(data: data!){
+                        MKImageDownloadManager.sharedInstance.setImage(image: image, forKey: url)
+                        onSuccess(image)
+                    }else{
+                        onFailure(NSError(domain: "", code: 100, userInfo: ["reason":"Unable to download image"]))
+                    }
+
+                }
+                
+            }).resume()
+        }
+       
     }
     
   

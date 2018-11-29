@@ -11,7 +11,7 @@ import UIKit
 class MKImageDownloadManager: NSObject {
 
     static let sharedInstance = MKImageDownloadManager()
-    var imageCache:NSCache<NSString, MKImageDownloader>
+    var imageCache:NSCache<NSString, UIImage>
     
     
     override init() {
@@ -19,11 +19,11 @@ class MKImageDownloadManager: NSObject {
         self.imageCache = NSCache()
     }
     
-    func getDownloader(forUrl url:String) -> MKImageDownloader? {
+    func getImage(forUrl url:String) -> UIImage? {
         return self.imageCache.object(forKey: url as NSString)
     }
     
-    func setDownloader(downloader:MKImageDownloader, url:String) -> Void {
-        self.imageCache.setObject(downloader, forKey: url as NSString)
+    func setImage(image:UIImage,forKey url:String) -> Void {
+        self.imageCache.setObject(image, forKey: url as NSString)
     }
 }
